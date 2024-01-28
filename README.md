@@ -3,7 +3,7 @@
 `bashlib.sh` provides a small framework of useful shell functions (e.g. paramter parsing, trap handling, tests, etc.). 
 
 ### Getting started:
-Include `bashlib.sh` on top of your script. The example below expects `bashlib.sh` in the same directory as the script - change as needed.
+Include `bashlib.sh` on top of your script. The example below expects `bashlib.sh` in the same directory as the script.
 ```sh
 #!/usr/bin/env bash
 #
@@ -36,7 +36,7 @@ __run__
 
 ### Option parsing:
 
-You may define `getopt` style options for the script and if you declare a function to receive such options through the frame work you can implement option parsing very easily.
+You may define `getopt` style options for the script and if you declare a function to receive such options through the framework you can implement option parsing very easily.
 
 ```sh
 #!/usr/bin/env bash
