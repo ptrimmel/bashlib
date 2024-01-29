@@ -33,12 +33,19 @@ _sigexit( ) {
     trap '_sigerr $?' ERR
 }
 
+# DEBUG implies VERBOSE
+[[ -v DEBUG ]] && VERBOSE=1
+
 # logging
-_debug( ) { local args="$@"; [[ -v DEBUG ]] && { printf "[%(%T)T] %b %s: %s\n" -1 "\e[94mD\e[0m" "$__this__" "$args" >&2; }; true; }
-_info( )  { local args="$@"; [[ -v QUIET ]] || { printf "[%(%T)T] %b %s: %s\n" -1 "\e[32mI\e[0m" "$__this__" "$args" >&2; }; true; }
-_warn( )  { local args="$@"; printf "[%(%T)T] %b %s: %s\n" -1 "\e[33mW\e[0m" "$__this__" "$args" >&2; }
-_error( ) { local args="$@"; printf "[%(%T)T] %b %s: %s\n" -1 "\007\e[91mE\e[0m" "$__this__" "$args" >&2; }
-_fatal( ) { local args="$@"; printf "[%(%T)T] %b %s: %s\n" -1 "\007\007\007\e[37;41mF\e[0m" "$__this__" "$args" >&2; exit 255; }
+_log( ) { local args="$@"; [[ -v QUIET ]] || { printf "%s: %b\n" "$__this__" "$args" >&2; }; true; }
+_log_err( ) { local args="$@"; printf "%s: %b\n" "$__this__" "$args" >&2; true; }
+
+# verbose logging
+_debug( )  { local args="$@"; [[ -v DEBUG ]] && { printf "[%(%T)T] %b %s: %s\n" -1 "\e[94mD\e[0m" "$__this__" "$args" >&2; }; true; }
+_inform( ) { local args="$@"; [[ -v VERBOSE ]] && { printf "[%(%T)T] %b %s: %s\n" -1 "\e[32mI\e[0m" "$__this__" "$args" >&2; }; true; }
+_warn( )   { local args="$@"; [[ -v VERBOSE ]] && { printf "[%(%T)T] %b %s: %s\n" -1 "\e[33mW\e[0m" "$__this__" "$args" >&2; }; true;  }
+_error( )  { local args="$@"; [[ -v VERBOSE ]] && { printf "[%(%T)T] %b %s: %s\n" -1 "\007\e[91mE\e[0m" "$__this__" "$args" >&2; }; true;  }
+_fatal( )  { local args="$@"; [[ -v VERBOSE ]] && { printf "[%(%T)T] %b %s: %s\n" -1 "\007\007\007\e[37;41mF\e[0m" "$__this__" "$args" >&2; exit 255; } }
 
 # predicates
 _is_declared( ) { [[ -n ${!1+__anything__} ]] || declare -p $1 &>/dev/null; } 
