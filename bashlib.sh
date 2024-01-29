@@ -55,6 +55,14 @@ _is_empty( ) { [[ -z ${!1} ]]; }
 _is_not_empty( ) { ! _is_empty $1; }
 _is_function( ) { [[ "$(declare -Ff "$1")" ]]; }
 
+# string functions
+_trim() {
+    local s=$1 LC_CTYPE=C
+    s=${s#"${s%%[![:space:]]*}"}
+    s=${s%"${s##*[![:space:]]}"}
+    printf '%s' "$s"
+}
+
 declare -i _in_getopt=0
 declare __args__=( "$@" )
 
