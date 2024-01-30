@@ -37,8 +37,8 @@ _sigexit( ) {
 [[ -v DEBUG ]] && VERBOSE=1
 
 # logging
-_log( ) { local args="$@"; [[ -v QUIET ]] || { printf "%s: %b\n" "$__this__" "$args" >&2; }; true; }
-_log_err( ) { local args="$@"; printf "%s: %b\n" "$__this__" "$args" >&2; exit 1; }
+_log( ) { local args="$@"; [[ -v QUIET ]] || { printf "%s: %b\n" "$__this__" "$args"; }; true; }
+_err( ) { local args="$@"; printf "%s: %b\n" "$__this__" "$args" >&2; exit 1; }
 
 # verbose logging
 _debug( )  { local args="$@"; [[ -v DEBUG ]] && { printf "[%(%T)T] %b %s: %s\n" -1 "\e[94mD\e[0m" "$__this__" "$args" >&2; }; true; }
