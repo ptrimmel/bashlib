@@ -47,7 +47,7 @@ _warn( )   { local args="$@"; [[ -v VERBOSE ]] && { printf "[%(%T)T] %b %s: %s\n
 _error( )  { local args="$@"; [[ -v VERBOSE ]] && { printf "[%(%T)T] %b %s: %s\n" -1 "\007\e[91mE\e[0m" "$__this__" "$args" >&2; }; true;  }
 _fatal( )  { local args="$@"; [[ -v VERBOSE ]] && { printf "[%(%T)T] %b %s: %s\n" -1 "\007\007\007\e[37;41mF\e[0m" "$__this__" "$args" >&2; exit 255; } }
 
-# predicates
+# variable predicates
 _is_declared( ) { [[ -n ${!1+__anything__} ]] || declare -p $1 &>/dev/null; } 
 _is_unset( ) { [[ -z ${!1+__anything__} ]] && ! declare -p $1 &>/dev/null; }
 _is_set( ) { ! _is_unset $1; }
@@ -72,8 +72,14 @@ _map( ) { # fld [var...]
     local f=$1[@]; shift
     local v=( ${!f} ) n=( $@ )
     for (( i=0; i < ${#n}; i++ )); do
-        eval ${n[i]}="${v[i]}"
+        eval ${n[i]}="${v[i]}" # yes, bad. I know...
     done    
+}
+
+# array functions
+_in_array( ) {
+    local ref=$1[@] var=$2
+    [[ " ${!ref} " =~ [[:space:]]$var[[:space:]] ]]
 }
 
 declare -i _in_getopt=0
