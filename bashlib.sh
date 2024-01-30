@@ -56,11 +56,24 @@ _is_not_empty( ) { ! _is_empty $1; }
 _is_function( ) { [[ "$(declare -Ff "$1")" ]]; }
 
 # string functions
-_trim() {
+_trim( ) { # str
     local s=$1 LC_CTYPE=C
     s=${s#"${s%%[![:space:]]*}"}
     s=${s%"${s##*[![:space:]]}"}
     printf '%s' "$s"
+}
+
+_split( ) { # str del fld
+    local s=$1 d=$2 f=$3 LC_CTYPE=C
+    mapfile -td $d $f < <(printf "%s\0" "$s")
+}
+
+_map( ) { # fld [var...]
+    local f=$1[@]; shift
+    local v=( ${!f} ) n=( $@ )
+    for (( i=0; i < ${#n}; i++ )); do
+        eval ${n[i]}="${v[i]}"
+    done    
 }
 
 declare -i _in_getopt=0
