@@ -52,9 +52,9 @@ _on_options( ) {
 # clear parameter
 unset DATABASE KEYS
 
-SUPPORTED=( -
+SUPPORTED=(
     ahosts ahostsv4 ahostsv6 aliases ethers group gshadow hosts initgroups
-    netgroup networks passwd protocols rpc services shadow -
+    netgroup networks passwd protocols rpc services shadow
 )
 
 ##
@@ -68,7 +68,7 @@ __main__( ) {
     # set database
     (( $# > 0 )) || _fatal no database.
     DATABASE="${1,,}"; shift;
-    [[ ${SUPPORTED[@]} =~ [[:space:]]$DATABASE[[:space:]] ]] || \
+    _in_array SUPPORTED $DATABASE || \
         _fatal database \'$DATABASE\' is not supported.
 
     # set keys
